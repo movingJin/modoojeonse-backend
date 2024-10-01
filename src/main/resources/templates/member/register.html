@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <p>Sign-Up</p>
+    <form action="/member/new" method="post">
+        <table style="border-collapse: collapse; border:none;">
+            <tr>
+                <td><label for="email">E-Mail</label></td>
+                <td><input type="email" id="email" name="email" placeholder="E-Mail을 입력하세요." required></td>
+                <td><button value="send code" type="button" onclick="send_auth_code();">send code</button></td>
+            </tr>
+            <tr>
+                <td><label for="code">Auth code</label></td>
+                <td><input type="text" id="code" name="code" placeholder="코드를 입력하세요." required></td>
+            </tr>
+            <tr>
+                <td><label for="name">Name</label></td>
+                <td  colspan="2"><input type="text" id="name" name="name" placeholder="이름을 입력하세요." required></td>
+            </tr>
+            <tr>
+                <td><label for="phone">Phone Number</label></td>
+                <td  colspan="2"><input type="tel" id="phone" name="phone" placeholder="전화번호를 입력하세요.(숫자만)" pattern="[0-9]{3}[0-9]{4}[0-9]{4}" required></td>
+            </tr>
+            <tr>
+                <td><label for="password">Password</label></td>
+                <td colspan="2"><input type="password" id="password" name="password" required></td>
+            </tr>
+        </table>
+        <button id="register_submit" value="Submit" type="submit" disabled>Submit</button>
+    </form>
+</div> <!-- /container -->
+<script type="text/javascript">
+    {
+      const btn_submit = document.getElementById("register_submit");
+      const input_email = document.getElementById("email");
+      const input_code = document.getElementById("code");
+      const input_name = document.getElementById("name");
+      const input_phone = document.getElementById("phone");
+      const input_passwd = document.getElementById("password");
+      deactivate()
+
+      function activate() {
+        btn_submit.disabled = false;
+      }
+
+      function deactivate() {
+        btn_submit.disabled = true;
+      }
+
+      function check() {
+        if (input_email.value !== '' &&
+            input_name.value !== '' &&
+            input_phone.value !== '' &&
+            input_code.value !== '' &&
+            input_passwd.value !== '' &&
+            input_email.checkValidity()) {
+          activate()
+        } else {
+          deactivate()
+        }
+      }
+
+      input_email.addEventListener('input', check);
+      input_name.addEventListener('input', check);
+      input_phone.addEventListener('input', check);
+      input_passwd.addEventListener('input', check);
+      input_code.addEventListener('input', check);
+    }
+
+    $('form').submit(function(event){
+        const formData = {};
+        $($('form').serializeArray()).each(function(i, v) {
+            formData[v.name] = v.value;
+        });
+        $.ajax({
+            type: 'POST',
+            url: '/register',
+            dataType: 'json',
+            data: JSON.stringify(formData),
+            contentType : 'application/json',
+            success: function(data) {
+                alert("회원가입에 성공했습니다.");
+                window.location.href = "/login";
+            }
+        });
+        event.preventDefault();
+    });
+
+    function send_auth_code(){
+        const url = "/emails/send-authcode";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            dataType: 'json',
+            data: JSON.stringify({email: $('#email').val()}),
+            contentType : 'application/json',
+            success: function(data) {
+
+            }
+        });
+        const email = $('#email').val();
+        alert("인증코드를 " + email + "로 전송했습니다. 30분 내로 메일이 도착합니다.");
+        event.preventDefault();
+    }
+</script>
+</body>
+</html>
