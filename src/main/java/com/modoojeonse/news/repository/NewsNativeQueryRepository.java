@@ -18,7 +18,7 @@ public class NewsNativeQueryRepository {
 
     public SearchHits<NewsDocument> findByNativeCondition(NewsRequestDto newsRequestDto) {
         Query query = createConditionNativeQuery(newsRequestDto);
-        System.out.println("testbug: " + query.getHighlightQuery());
+        //System.out.println("testbug: " + query.getHighlightQuery());
         return operations.search(query, NewsDocument.class);
     }
 
