@@ -23,6 +23,14 @@ public class NewsSearchServiceImpl implements NewsSearchService {
     private final NewsNativeQueryRepository newsNativeQueryRepository;
 
     @Override
+    public List<NewsResponseDto> searchAll(Pageable pageable) {
+        Page<NewsDocument> searchHits = newsRepository.findAll(pageable);
+        return searchHits.stream()
+                .map(NewsResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<NewsResponseDto> searchTitle(String keyword, Pageable pageable) {
         Page<NewsDocument> searchHits = newsRepository.findByTitle(keyword, pageable);
         return searchHits.stream()

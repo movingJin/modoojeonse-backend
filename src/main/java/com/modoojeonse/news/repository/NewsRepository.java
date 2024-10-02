@@ -7,6 +7,7 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 import org.springframework.data.domain.Pageable;
 
 public interface NewsRepository extends ElasticsearchRepository<NewsDocument, String> {
+    Page<NewsDocument> findAll(Pageable pageable);
     Page<NewsDocument> findByTitle(String keyword, Pageable pageable);
     Page<NewsDocument> findByBody(String keyword, Pageable pageable);
 }

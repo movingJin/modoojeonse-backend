@@ -23,6 +23,14 @@ public class NewsSearchController {
     private final NewsSearchService newsSearchService;
 
     @ResponseBody
+    @GetMapping("/news/all")
+    private ResponseEntity< List<NewsResponseDto> > searchAll(Pageable pageable) {
+        List<NewsResponseDto> news = newsSearchService.searchAll(pageable);
+
+        return new ResponseEntity<>(news, HttpStatus.OK);
+    }
+
+    @ResponseBody
     @GetMapping("/news/search-title")
     private ResponseEntity< List<NewsResponseDto> > searchTitle(@RequestParam(value = "keyword") String keyword, Pageable pageable) {
         List<NewsResponseDto> news = newsSearchService.searchTitle(keyword, pageable);
