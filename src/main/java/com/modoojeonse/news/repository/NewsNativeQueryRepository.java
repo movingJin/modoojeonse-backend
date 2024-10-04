@@ -2,8 +2,10 @@ package com.modoojeonse.news.repository;
 
 
 import java.util.ArrayList;
-import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
+
+import co.elastic.clients.elasticsearch._types.SortOptions;
+import co.elastic.clients.elasticsearch._types.SortOptionsBuilders;
+import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
 import co.elastic.clients.json.JsonData;
@@ -12,16 +14,11 @@ import com.modoojeonse.news.entity.NewsDocument;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
-import org.springframework.data.elasticsearch.*;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.stereotype.Repository;
-//import org.elasticsearch.index.query.MatchQueryBuilder;
 
 import java.util.List;
-
-import static org.springframework.data.elasticsearch.client.elc.Queries.matchQuery;
 
 @Repository
 @RequiredArgsConstructor
@@ -30,12 +27,11 @@ public class NewsNativeQueryRepository {
 
     public SearchHits<NewsDocument> findByNativeCondition(NewsRequestDto newsRequestDto) {
         NativeQuery query = createConditionNativeQuery(newsRequestDto);
-        //System.out.println("testbug: " + query.getHighlightQuery());
         return operations.search(query, NewsDocument.class);
     }
 
     private NativeQuery createConditionNativeQuery(NewsRequestDto newsRequestDto) {
-        NativeQueryBuilder queryBuilder = new NativeQueryBuilder();
+        NativeQueryBuilder nativeQueryBuilder = new NativeQueryBuilder();
         List<Query> mustList = new ArrayList<>();
         List<Query> filterList = new ArrayList<>();
 
@@ -83,7 +79,21 @@ public class NewsNativeQueryRepository {
                 .must(mustList)
                 .build()._toQuery();
 
-        return queryBuilder.withQuery(boolQuery)
-                .build();
+        SortOptions sortOptions = new SortOptions.Builder()
+                .field(SortOptionsBuilders.field()
+                        .field("@timestamp")
+                        .order(SortOrder.Desc)
+                        .build()
+                ).build();
+
+        nativeQueryBuilder
+                .withReactiveBatchSize(10)
+                .withQuery(boolQuery)
+                .withSort(sortOptions);
+        if (newsRequestDto.getSearchAfter() != null) {
+            nativeQueryBuilder.withSearchAfter(List.of(newsRequestDto.getSearchAfter()));
+        }
+
+        return nativeQueryBuilder.build();
     }
 }

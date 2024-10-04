@@ -21,4 +21,5 @@ public class NewsRequestDto {
     private String publisher;
     private String author;
     private String url;
+    private String searchAfter;
 }
