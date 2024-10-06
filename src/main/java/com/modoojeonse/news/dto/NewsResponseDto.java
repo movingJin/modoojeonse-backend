@@ -16,7 +16,7 @@ public class NewsResponseDto {
     private String id;
     private LocalDateTime timestamp;
     private String title;
-    private String summary_text;
+    private String summary;
     private String body;
     private String html;
     private String publisher;
@@ -27,7 +27,7 @@ public class NewsResponseDto {
         this.id = news.getId();
         this.timestamp = news.getTimestamp();
         this.title = news.getTitle();
-        this.summary_text = news.getSummary_text();
+        this.summary = news.getSummary();
         this.body = news.getBody();
         this.html = news.getHtml();
         this.publisher = news.getPublisher();

@@ -19,14 +19,13 @@ public class NewsDocument {
     private String id;
 
     @Field(name = "@timestamp", type = FieldType.Date, pattern = "uuuu-MM-dd'T'HH:mm:ss.SSSX", format = {})
-
     private LocalDateTime timestamp;
 
     @Field(type = FieldType.Text)
     private String title;
 
-    @Field(type = FieldType.Text, analyzer = "search_nori_analyzer")
-    private String summary_text;
+    @Field(name="summary_text", type = FieldType.Text, analyzer = "search_nori_analyzer")
+    private String summary;
 
     @Field(name="body_text", type = FieldType.Text, analyzer = "search_nori_analyzer")
     private String body;
