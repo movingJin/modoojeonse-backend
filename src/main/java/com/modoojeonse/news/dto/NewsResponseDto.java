@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,6 +23,7 @@ public class NewsResponseDto {
     private String publisher;
     private String author;
     private String url;
+    private long sort;
 
     public NewsResponseDto(NewsDocument news) {
         this.id = news.getId();

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,12 @@ public class NewsSearchServiceImpl implements NewsSearchService {
     @Override
     public List<NewsResponseDto> searchNative(NewsRequestDto newsRequestDto) {
         SearchHits<NewsDocument> searchHits = newsNativeQueryRepository.findByNativeCondition(newsRequestDto);
-        return searchHits.stream().map(hit -> new NewsResponseDto(hit.getContent())).toList();
+        List<NewsResponseDto> searchResults = new ArrayList<>();
+        for(var searchHit: searchHits){
+            NewsResponseDto newsResponseDto = new NewsResponseDto(searchHit.getContent());
+            newsResponseDto.setSort((Long) searchHit.getSortValues().get(0));
+            searchResults.add(newsResponseDto);
+        }
+        return searchResults;
     }
 }
