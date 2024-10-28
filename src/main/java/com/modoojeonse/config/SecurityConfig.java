@@ -89,7 +89,7 @@ public class SecurityConfig {
                 .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 조건별로 요청 허용/제한 설정
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers("/register", "/login", "/emails/send-authcode", "/emails/verifications", "/find-email", "/find-pwd", "/modify-pwd", "/modify-info", "/news/**").permitAll()
+                        .requestMatchers("/register", "/login", "/emails/send-authcode", "/emails/verifications", "/find-email", "/find-pwd", "/modify-pwd", "/modify-info", "/news/**", "/geo/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")
                         .anyRequest().denyAll()
