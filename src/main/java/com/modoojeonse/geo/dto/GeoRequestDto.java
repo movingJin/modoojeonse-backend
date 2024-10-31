@@ -16,4 +16,6 @@ public class GeoRequestDto {
     private String id;
     private GeoPoint location;
     private String address;
+    private String author;
+    private String type;
 }

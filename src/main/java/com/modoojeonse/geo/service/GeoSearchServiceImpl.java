@@ -4,6 +4,7 @@ import com.modoojeonse.geo.dto.GeoRequestDto;
 import com.modoojeonse.geo.dto.GeoResponseDto;
 import com.modoojeonse.geo.entity.GeoDocument;
 import com.modoojeonse.geo.repository.GeoNativeQueryRepository;
+import com.modoojeonse.geo.repository.GeoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -16,6 +17,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class GeoSearchServiceImpl implements GeoSearchService {
+    private final GeoRepository geoRepository;
     private final GeoNativeQueryRepository geoNativeQueryRepository;
 
     @Override
@@ -27,5 +29,9 @@ public class GeoSearchServiceImpl implements GeoSearchService {
             searchResults.add(geoResponseDto);
         }
         return searchResults;
+    }
+
+    public void saveGeo(GeoRequestDto geoRequestDto){
+        geoRepository.save(new GeoDocument(geoRequestDto));
     }
 }

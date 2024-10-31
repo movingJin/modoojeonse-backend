@@ -19,6 +19,7 @@ public class GeoResponseDto {
     private GeoPoint location;
     private String address;
     private String author;
+    private String type;
 
     public GeoResponseDto(GeoDocument location) {
         this.id = location.getId();
@@ -26,5 +27,6 @@ public class GeoResponseDto {
         this.location = location.getLocation();
         this.address = location.getAddress();
         this.author = location.getAuthor();
+        this.type = location.getType();
     }
 }

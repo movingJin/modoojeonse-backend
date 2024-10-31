@@ -1,7 +1,9 @@
 package com.modoojeonse.geo.entity;
 
+import com.modoojeonse.geo.dto.GeoRequestDto;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -12,8 +14,10 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Document(indexName = "modoojeonse-geo")
+//@Document(indexName = "modoojeonse-geo-2025")
+@Document(indexName = "modoojeonse-geo-#{@elasticIndex.getIndexDate()}")
 @Setting(replicas = 0)
+
 public class GeoDocument {
     @Id
     private String id;
@@ -24,9 +28,22 @@ public class GeoDocument {
     @Field(name = "location")
     private GeoPoint location;
 
-    @Field(type = FieldType.Text, analyzer = "search_nori_analyzer")
+    @Field(type = FieldType.Text)
     private String address;
 
     @Field(type = FieldType.Keyword, index = false, docValues = false)
     private String author;
+
+    @Field(type = FieldType.Keyword)
+    private String type;
+
+    public GeoDocument() {}
+
+    public GeoDocument(GeoRequestDto geoRequestDto) {
+        this.id = geoRequestDto.getId();
+        this.location = geoRequestDto.getLocation();
+        this.address = geoRequestDto.getAddress();
+        this.author = geoRequestDto.getAuthor();
+        this.type = geoRequestDto.getType();
+    }
 }

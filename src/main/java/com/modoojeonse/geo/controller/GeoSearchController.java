@@ -3,6 +3,7 @@ package com.modoojeonse.geo.controller;
 import com.modoojeonse.geo.dto.GeoRequestDto;
 import com.modoojeonse.geo.dto.GeoResponseDto;
 import com.modoojeonse.geo.service.GeoSearchService;
+import com.modoojeonse.member.dto.SignUpRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -25,5 +26,12 @@ public class GeoSearchController {
         List<GeoResponseDto> locations = geoSearchService.searchNative(request);
 
         return new ResponseEntity<>(locations, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/geo/save")
+    public ResponseEntity<Void> save(@RequestBody GeoRequestDto request) throws Exception {
+        geoSearchService.saveGeo(request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
