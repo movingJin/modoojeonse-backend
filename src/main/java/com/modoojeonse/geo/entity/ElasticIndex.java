@@ -10,7 +10,7 @@ public class ElasticIndex {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
-    public int getIndexDate() {
+    public int getIndexYear() {
         return LocalDate.now().getYear();
     }
 }

@@ -14,8 +14,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-//@Document(indexName = "modoojeonse-geo-2025")
-@Document(indexName = "modoojeonse-geo-#{@elasticIndex.getIndexDate()}")
+@Document(indexName = "modoojeonse-geo-#{@elasticIndex.getIndexYear()}")
 @Setting(replicas = 0)
 
 public class GeoDocument {
@@ -37,7 +36,7 @@ public class GeoDocument {
     @Field(type = FieldType.Keyword)
     private String type;
 
-    public GeoDocument() {}
+    public GeoDocument() {} //nativeSearch 할 때, 사용 됨.
 
     public GeoDocument(GeoRequestDto geoRequestDto) {
         this.id = geoRequestDto.getId();
