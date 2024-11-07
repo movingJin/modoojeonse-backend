@@ -47,8 +47,8 @@ public class NewsSearchController {
     }
 
     @ResponseBody
-    @PostMapping("/news/search-native")
-    private ResponseEntity< List<NewsResponseDto> > searchNative(@RequestBody NewsRequestDto request) {
+    @GetMapping("/news/search-native")
+    private ResponseEntity< List<NewsResponseDto> > searchNative(NewsRequestDto request) {
         List<NewsResponseDto> news = newsSearchService.searchNative(request);
 
         return new ResponseEntity<>(news, HttpStatus.OK);
