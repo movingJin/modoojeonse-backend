@@ -78,7 +78,8 @@ public class SecurityConfig {
                                         "Baeldung-Allowed",
                                         "Credential",
                                         "X-AUTH-TOKEN",
-                                        "X-CSRF-TOKEN"
+                                        "X-CSRF-TOKEN",
+                                        JwtProvider.REFRESH_TOKEN
                                 ));
                                 return config;
                             };
