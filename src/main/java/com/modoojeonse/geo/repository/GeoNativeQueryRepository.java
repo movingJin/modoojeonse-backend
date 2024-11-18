@@ -21,7 +21,7 @@ import java.util.List;
 public class GeoNativeQueryRepository {
     private final ElasticsearchOperations operations;
 
-    public SearchHits<GeoDocument> findByNativeCondition(GeoRequestDto geoRequestDto) {
+    public SearchHits<GeoDocument> findByDistance(GeoRequestDto geoRequestDto) {
         NativeQueryBuilder nativeQueryBuilder = new NativeQueryBuilder();
         List<Query> mustList = new ArrayList<>();
         List<Query> filterList = new ArrayList<>();
@@ -42,6 +42,28 @@ public class GeoNativeQueryRepository {
         Query boolQuery = QueryBuilders.bool()
                 .filter(filterList)
                 .must(mustList)
+                .build()._toQuery();
+
+        nativeQueryBuilder
+                .withReactiveBatchSize(10)
+                .withQuery(boolQuery);
+
+        NativeQuery query = nativeQueryBuilder.build();
+        return operations.search(query, GeoDocument.class, IndexCoordinates.of("modoojeonse-geo"));
+    }
+
+    public SearchHits<GeoDocument> findByAddressKeyword(String address){
+        NativeQueryBuilder nativeQueryBuilder = new NativeQueryBuilder();
+        List<Query> filterList = new ArrayList<>();
+
+        Query filterQuery = QueryBuilders.match()
+                .query(address)
+                .field("address.keyword")
+                .build()._toQuery();
+        filterList.add(filterQuery);
+
+        Query boolQuery = QueryBuilders.bool()
+                .filter(filterList)
                 .build()._toQuery();
 
         nativeQueryBuilder

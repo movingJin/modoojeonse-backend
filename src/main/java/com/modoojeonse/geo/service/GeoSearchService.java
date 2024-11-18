@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface GeoSearchService {
     public List<GeoResponseDto> searchNative(GeoRequestDto geoRequestDto);
-    public void saveGeo(GeoRequestDto geoRequestDto);
+    public boolean saveGeo(GeoRequestDto geoRequestDto) throws Exception;
 }

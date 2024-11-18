@@ -37,8 +37,7 @@ public class GeoSearchController {
 
     @ResponseBody
     @PostMapping(value = "/geo/save")
-    public ResponseEntity<Void> save(@RequestBody GeoRequestDto request) throws Exception {
-        geoSearchService.saveGeo(request);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Boolean> save(@RequestBody GeoRequestDto request) throws Exception {
+        return new ResponseEntity<>(geoSearchService.saveGeo(request), HttpStatus.OK);
     }
 }

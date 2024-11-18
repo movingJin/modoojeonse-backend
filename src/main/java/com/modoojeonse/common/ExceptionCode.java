@@ -8,8 +8,9 @@ public enum ExceptionCode {
     MEMBER_EXISTS(101, "Member already registered."),
     NO_SUCH_ALGORITHM(102, "No such algorithm."),
     AUTH_CODE_NOT_VALID(103, "Auth code is not valid."),
-    MEMBER_NOT_FOUND(104, "Member not found.");
+    MEMBER_NOT_FOUND(104, "Member not found."),
 
+    GEO_EXISTS(201, "Address already registered.");
     private final int status;
 
     private final String message;
