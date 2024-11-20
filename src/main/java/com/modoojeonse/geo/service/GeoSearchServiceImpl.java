@@ -34,6 +34,7 @@ public class GeoSearchServiceImpl implements GeoSearchService {
         return searchResults;
     }
 
+    @Override
     public boolean saveGeo(GeoRequestDto geoRequestDto) throws Exception {
         checkDuplicatedGeo(geoRequestDto.getAddress());
         geoRepository.save(new GeoDocument(geoRequestDto));

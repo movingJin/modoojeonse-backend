@@ -48,8 +48,8 @@ public class SecurityConfig {
                                 CorsConfiguration config = new CorsConfiguration();
                                 config.setAllowedOrigins(
                                         List.of(
-                                            "http://192.168.0.3:8083/",
-                                            "http://localhost:8083/"
+                                            "http://192.168.0.3:8083",
+                                            "http://localhost:8083"
                                         )
                                 );
                                 config.setMaxAge(3600L);
@@ -91,9 +91,9 @@ public class SecurityConfig {
                 // 조건별로 요청 허용/제한 설정
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers("/error").permitAll()
-                        .requestMatchers("/register", "/login", "/emails/send-authcode", "/emails/verifications", "/find-email", "/find-pwd", "/modify-pwd", "/modify-info", "/news/**", "/geo/**").permitAll()
+                        .requestMatchers("/register", "/login", "/emails/send-authcode", "/emails/verifications", "/find-email", "/find-pwd", "/modify-pwd", "/modify-info", "/news/**", "/geo/distance", "/review/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user/**").hasRole("USER")
+                        .requestMatchers("/user/**", "/geo/**").hasRole("USER")
                         .anyRequest().denyAll()
                 )
                 // JWT 인증 필터 적용
