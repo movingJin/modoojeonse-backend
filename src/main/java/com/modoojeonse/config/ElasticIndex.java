@@ -1,4 +1,4 @@
-package com.modoojeonse.geo.entity;
+package com.modoojeonse.config;
 
 import org.springframework.stereotype.Component;
 
