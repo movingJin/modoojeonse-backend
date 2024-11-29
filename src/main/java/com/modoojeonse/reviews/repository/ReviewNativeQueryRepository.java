@@ -6,7 +6,6 @@ import co.elastic.clients.elasticsearch._types.SortOptionsBuilders;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
-import co.elastic.clients.json.JsonData;
 import com.modoojeonse.reviews.dto.ReviewRequestDto;
 import com.modoojeonse.reviews.entity.ReviewDocument;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +13,7 @@ import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -55,6 +55,13 @@ public class ReviewNativeQueryRepository {
                     .build()._toQuery();
             mustList.add(query);
         }
+        if(reviewRequestDto.getAddress() != null) {
+            Query query = QueryBuilders.term()
+                    .field("address")
+                    .value(reviewRequestDto.getAddress())
+                    .build()._toQuery();
+            filterList.add(query);
+        }
 /*
         if (reviewRequestDto.getFromTime() != null) {
             Query startedAtFilterQuery = QueryBuilders
@@ -94,5 +101,33 @@ public class ReviewNativeQueryRepository {
         }
 
         return nativeQueryBuilder.build();
+    }
+
+    public SearchHits<ReviewDocument> findByAddressDetailKeyword(String author, String address){
+        NativeQueryBuilder nativeQueryBuilder = new NativeQueryBuilder();
+        List<Query> filterList = new ArrayList<>();
+
+        Query addressFilter = QueryBuilders.match()
+                .query(address)
+                .field("address_detail.keyword")
+                .build()._toQuery();
+        filterList.add(addressFilter);
+
+        Query authorFilter = QueryBuilders.match()
+                .query(author)
+                .field("author.keyword")
+                .build()._toQuery();
+        filterList.add(authorFilter);
+
+        Query boolQuery = QueryBuilders.bool()
+                .filter(filterList)
+                .build()._toQuery();
+
+        nativeQueryBuilder
+                .withReactiveBatchSize(10)
+                .withQuery(boolQuery);
+
+        NativeQuery query = nativeQueryBuilder.build();
+        return operations.search(query, ReviewDocument.class);
     }
 }

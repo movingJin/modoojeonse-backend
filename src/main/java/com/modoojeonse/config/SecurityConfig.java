@@ -91,9 +91,9 @@ public class SecurityConfig {
                 // 조건별로 요청 허용/제한 설정
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers("/error").permitAll()
-                        .requestMatchers("/register", "/login", "/emails/send-authcode", "/emails/verifications", "/find-email", "/find-pwd", "/modify-pwd", "/modify-info", "/news/**", "/geo/distance", "/review/**").permitAll()
+                        .requestMatchers("/register", "/login", "/emails/send-authcode", "/emails/verifications", "/find-email", "/find-pwd", "/modify-pwd", "/modify-info", "/news/**", "/geo/distance", "/review/search-native").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user/**", "/geo/**").hasRole("USER")
+                        .requestMatchers("/user/**", "/geo/**", "/review/**").hasRole("USER")
                         .anyRequest().denyAll()
                 )
                 // JWT 인증 필터 적용

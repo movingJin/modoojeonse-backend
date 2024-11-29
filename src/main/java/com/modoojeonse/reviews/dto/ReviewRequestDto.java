@@ -20,6 +20,7 @@ public class ReviewRequestDto {
     private String body;
     private String author;
     private String address;
+    private String addressDetail;
     private String contractType;
     private boolean isReturnDelayed;
     private Long deposit;

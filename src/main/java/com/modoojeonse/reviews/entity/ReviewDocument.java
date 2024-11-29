@@ -30,8 +30,11 @@ public class ReviewDocument {
     @Field(type = FieldType.Keyword, index = false, docValues = false)
     private String author;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     private String address;
+
+    @Field(name="address_detail", type = FieldType.Text)
+    private String addressDetail;
 
     @Field(name="contract_type", type = FieldType.Keyword)
     private String contractType;
@@ -65,6 +68,7 @@ public class ReviewDocument {
         this.title = reviewRequestDto.getTitle();
         this.body = reviewRequestDto.getBody();
         this.address = reviewRequestDto.getAddress();
+        this.addressDetail = reviewRequestDto.getAddressDetail().strip();
         this.author = reviewRequestDto.getAuthor();
         this.contractType = reviewRequestDto.getContractType();
         this.isReturnDelayed = reviewRequestDto.isReturnDelayed();

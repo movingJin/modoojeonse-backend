@@ -1,5 +1,8 @@
 package com.modoojeonse.reviews.service;
 
+import com.modoojeonse.common.BusinessLogicException;
+import com.modoojeonse.common.ExceptionCode;
+import com.modoojeonse.geo.entity.GeoDocument;
 import com.modoojeonse.reviews.dto.ReviewRequestDto;
 import com.modoojeonse.reviews.dto.ReviewResponseDto;
 import com.modoojeonse.reviews.entity.ReviewDocument;
@@ -59,7 +62,17 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public boolean saveReview(ReviewRequestDto reviewRequestDto) throws Exception {
+        checkDuplicatedReview(reviewRequestDto.getAuthor(), reviewRequestDto.getAddressDetail().strip());
         reviewRepository.save(new ReviewDocument(reviewRequestDto));
         return true;
+    }
+
+    private void checkDuplicatedReview(String author, String address) {
+        SearchHits<ReviewDocument> searchHits = reviewNativeQueryRepository.findByAddressDetailKeyword(author, address);
+
+        if (!searchHits.isEmpty()) {
+            log.debug("ReviewSearchServiceImpl.checkDuplicatedGeo exception occur address: {}", address);
+            throw new BusinessLogicException(ExceptionCode.REVIEW_EXISTS);
+        }
     }
 }

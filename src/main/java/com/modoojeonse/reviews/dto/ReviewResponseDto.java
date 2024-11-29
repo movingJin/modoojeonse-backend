@@ -19,6 +19,7 @@ public class ReviewResponseDto {
     private String body;
     private String author;
     private String address;
+    private String addressDetail;
     private String contractType;
     private boolean isReturnDelayed;
     private Long deposit;
@@ -36,6 +37,7 @@ public class ReviewResponseDto {
         this.body = review.getBody();
         this.author = review.getAuthor();
         this.address = review.getAddress();
+        this.addressDetail = review.getAddressDetail();
         this.contractType = review.getContractType();
         this.isReturnDelayed = review.isReturnDelayed();
         this.deposit = review.getDeposit();

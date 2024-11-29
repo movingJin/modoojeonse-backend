@@ -10,7 +10,10 @@ public enum ExceptionCode {
     AUTH_CODE_NOT_VALID(103, "Auth code is not valid."),
     MEMBER_NOT_FOUND(104, "Member not found."),
 
-    GEO_EXISTS(201, "Address already registered.");
+    GEO_EXISTS(201, "Address already registered."),
+
+    REVIEW_EXISTS(301, "Review is already registered.");
+
     private final int status;
 
     private final String message;
