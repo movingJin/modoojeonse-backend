@@ -45,7 +45,7 @@ public class ReviewSearchController {
 
     @ResponseBody
     @GetMapping("/review/search-native")
-    private ResponseEntity< List<ReviewResponseDto> > searchNative(ReviewRequestDto request) {
+    private ResponseEntity< List<ReviewResponseDto> > searchNative(@ModelAttribute ReviewRequestDto request) {
         List<ReviewResponseDto> reviews = reviewService.searchNative(request);
 
         return new ResponseEntity<>(reviews, HttpStatus.OK);

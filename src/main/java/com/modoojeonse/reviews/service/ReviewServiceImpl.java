@@ -62,16 +62,19 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public boolean saveReview(ReviewRequestDto reviewRequestDto) throws Exception {
-        checkDuplicatedReview(reviewRequestDto.getAuthor(), reviewRequestDto.getAddressDetail().strip());
+        checkDuplicatedReview(reviewRequestDto);
         reviewRepository.save(new ReviewDocument(reviewRequestDto));
         return true;
     }
 
-    private void checkDuplicatedReview(String author, String address) {
-        SearchHits<ReviewDocument> searchHits = reviewNativeQueryRepository.findByAddressDetailKeyword(author, address);
+    private void checkDuplicatedReview(ReviewRequestDto reviewRequestDto) {
+        SearchHits<ReviewDocument> searchHits = reviewNativeQueryRepository.findByAddressDetailKeyword(
+                reviewRequestDto.getAuthor(),
+                reviewRequestDto.getAddress(),
+                reviewRequestDto.getAddressDetail().strip());
 
         if (!searchHits.isEmpty()) {
-            log.debug("ReviewSearchServiceImpl.checkDuplicatedGeo exception occur address: {}", address);
+            log.debug("ReviewSearchServiceImpl.checkDuplicatedGeo exception occur address: {}", reviewRequestDto.getAddressDetail());
             throw new BusinessLogicException(ExceptionCode.REVIEW_EXISTS);
         }
     }

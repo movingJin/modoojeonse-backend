@@ -103,15 +103,21 @@ public class ReviewNativeQueryRepository {
         return nativeQueryBuilder.build();
     }
 
-    public SearchHits<ReviewDocument> findByAddressDetailKeyword(String author, String address){
+    public SearchHits<ReviewDocument> findByAddressDetailKeyword(String author, String address, String addressDetail){
         NativeQueryBuilder nativeQueryBuilder = new NativeQueryBuilder();
         List<Query> filterList = new ArrayList<>();
 
         Query addressFilter = QueryBuilders.match()
                 .query(address)
-                .field("address_detail.keyword")
+                .field("address")
                 .build()._toQuery();
         filterList.add(addressFilter);
+
+        Query addressDetailFilter = QueryBuilders.match()
+                .query(addressDetail)
+                .field("address_detail.keyword")
+                .build()._toQuery();
+        filterList.add(addressDetailFilter);
 
         Query authorFilter = QueryBuilders.match()
                 .query(author)
