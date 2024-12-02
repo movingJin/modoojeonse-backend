@@ -12,7 +12,8 @@ public enum ExceptionCode {
 
     GEO_EXISTS(201, "Address already registered."),
 
-    REVIEW_EXISTS(301, "Review is already registered.");
+    REVIEW_EXISTS(301, "Review is already registered."),
+    REVIEW_NOT_FOUND(302, "Review is not found.");
 
     private final int status;
 

@@ -56,4 +56,16 @@ public class ReviewSearchController {
     public ResponseEntity<Boolean> save(@RequestBody ReviewRequestDto request) throws Exception {
         return new ResponseEntity<>(reviewService.saveReview(request), HttpStatus.OK);
     }
+
+    @ResponseBody
+    @PostMapping(value = "/review/edit")
+    public ResponseEntity<Boolean> edit(@RequestBody ReviewRequestDto request) throws Exception {
+        return new ResponseEntity<>(reviewService.editReview(request), HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/review/delete")
+    public ResponseEntity<Boolean> delete(@RequestBody ReviewRequestDto request) throws Exception {
+        return new ResponseEntity<>(reviewService.deleteReview(request), HttpStatus.OK);
+    }
 }

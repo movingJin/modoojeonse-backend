@@ -67,6 +67,26 @@ public class ReviewServiceImpl implements ReviewService {
         return true;
     }
 
+    @Override
+    public boolean editReview(ReviewRequestDto reviewRequestDto) throws Exception{
+        if(!reviewRequestDto.getId().isEmpty()){
+            reviewRepository.save(new ReviewDocument(reviewRequestDto));
+        }else{
+            throw new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean deleteReview(ReviewRequestDto reviewRequestDto) throws Exception {
+        if(!reviewRequestDto.getId().isEmpty()){
+            reviewRepository.deleteById(reviewRequestDto.getId());
+        }else{
+            throw new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND);
+        }
+        return true;
+    }
+
     private void checkDuplicatedReview(ReviewRequestDto reviewRequestDto) {
         SearchHits<ReviewDocument> searchHits = reviewNativeQueryRepository.findByAddressDetailKeyword(
                 reviewRequestDto.getAuthor(),
