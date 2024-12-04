@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -32,6 +33,14 @@ public class ReviewServiceImpl implements ReviewService {
         return searchHits.stream()
                 .map(ReviewResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ReviewResponseDto searchId(String id) {
+        Optional<ReviewDocument> searchHits = reviewRepository.findById(id);
+        return searchHits
+                .map(ReviewResponseDto::new) // Transform ReviewDocument to ReviewResponseDto
+                .orElseThrow(() -> new RuntimeException("Review not found for id: " + id)); // Handle empty case
     }
 
     @Override

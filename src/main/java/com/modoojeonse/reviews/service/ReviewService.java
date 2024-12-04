@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface ReviewService {
     public List<ReviewResponseDto> searchAll(Pageable pageable);
+    public ReviewResponseDto searchId(String keyword);
     public List<ReviewResponseDto> searchTitle(String keyword, Pageable pageable);
     public List<ReviewResponseDto> searchBody(String keyword, Pageable pageable);
     public List<ReviewResponseDto> searchNative(ReviewRequestDto reviewRequestDto);

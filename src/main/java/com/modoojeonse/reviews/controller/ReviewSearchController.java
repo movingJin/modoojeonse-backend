@@ -28,6 +28,14 @@ public class ReviewSearchController {
     }
 
     @ResponseBody
+    @GetMapping("/review/search-id")
+    private ResponseEntity< ReviewResponseDto > searchId(@RequestParam(value = "id") String id) {
+        ReviewResponseDto reviews = reviewService.searchId(id);
+
+        return new ResponseEntity<>(reviews, HttpStatus.OK);
+    }
+
+    @ResponseBody
     @GetMapping("/review/search-title")
     private ResponseEntity< List<ReviewResponseDto> > searchTitle(@RequestParam(value = "keyword") String keyword, Pageable pageable) {
         List<ReviewResponseDto> reviews = reviewService.searchTitle(keyword, pageable);
