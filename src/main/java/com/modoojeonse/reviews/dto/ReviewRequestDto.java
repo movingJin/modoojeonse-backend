@@ -1,5 +1,6 @@
 package com.modoojeonse.reviews.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class ReviewRequestDto {
     private String address;
     private String addressDetail;
     private String contractType;
+    @JsonProperty("isReturnDelayed")
     private boolean isReturnDelayed;
     private Long deposit;
     private LocalDateTime contractDate;
