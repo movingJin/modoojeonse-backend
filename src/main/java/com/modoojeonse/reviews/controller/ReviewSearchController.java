@@ -1,5 +1,6 @@
 package com.modoojeonse.reviews.controller;
 
+import com.modoojeonse.member.security.JwtProvider;
 import com.modoojeonse.reviews.dto.ReviewRequestDto;
 import com.modoojeonse.reviews.dto.ReviewResponseDto;
 import com.modoojeonse.reviews.service.ReviewService;
@@ -17,6 +18,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class ReviewSearchController {
+    private final JwtProvider jwtProvider;
     private final ReviewService reviewService;
 
     @ResponseBody
@@ -67,13 +69,23 @@ public class ReviewSearchController {
 
     @ResponseBody
     @PostMapping(value = "/review/edit")
-    public ResponseEntity<Boolean> edit(@RequestBody ReviewRequestDto request) throws Exception {
-        return new ResponseEntity<>(reviewService.editReview(request), HttpStatus.OK);
+    public ResponseEntity<Boolean> edit(@RequestBody ReviewRequestDto request, @RequestHeader (name="Authorization") String token) throws Exception {
+        String email = jwtProvider.getAccount(token);
+        if(email.equals(request.getAuthor())){
+            return new ResponseEntity<>(reviewService.editReview(request), HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @ResponseBody
     @PostMapping(value = "/review/delete")
-    public ResponseEntity<Boolean> delete(@RequestBody ReviewRequestDto request) throws Exception {
-        return new ResponseEntity<>(reviewService.deleteReview(request), HttpStatus.OK);
+    public ResponseEntity<Boolean> delete(@RequestBody ReviewRequestDto request, @RequestHeader (name="Authorization") String token) throws Exception {
+        String email = jwtProvider.getAccount(token);
+        if(email.equals(request.getAuthor())){
+            return new ResponseEntity<>(reviewService.deleteReview(request), HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
+        }
     }
 }
