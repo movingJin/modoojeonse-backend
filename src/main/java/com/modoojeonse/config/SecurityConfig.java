@@ -48,8 +48,9 @@ public class SecurityConfig {
                                 CorsConfiguration config = new CorsConfiguration();
                                 config.setAllowedOrigins(
                                         List.of(
-                                            "http://192.168.0.3:8083",
-                                            "http://localhost:8083"
+                                                "http://192.168.0.3:8083",
+                                                "http://localhost:8083",
+                                                "https://modoojeonse.movingjin.com"
                                         )
                                 );
                                 config.setMaxAge(3600L);
