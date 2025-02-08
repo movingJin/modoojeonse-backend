@@ -39,7 +39,7 @@ public class JwtProvider {
     // Refresh token 만료시간 : 1Hour
     public static final long REFRESH_TIME =  14 * 24 * 60 * 60 * 1000L; //2주
     public static final String ACCESS_TOKEN = "Access_Token";
-    public static final String REFRESH_TOKEN = "Refresh_Token";
+    public static final String REFRESH_TOKEN = "Refresh-Token";
 
 
     private final UserDetailServiceImpl userDetailsService;
