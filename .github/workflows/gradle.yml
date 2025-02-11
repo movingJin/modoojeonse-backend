@@ -47,7 +47,7 @@ jobs:
     
     steps:
     - name: Transfer jar file
-      uses: appleboy/ssh-action@master
+      uses: appleboy/scp-action@master
       with:
         host: ${{secrets.PROD_HOST}}
         username: ${{secrets.PROD_USERNAME}}
@@ -59,13 +59,14 @@ jobs:
         debug: true
 
     - name: Deploy to Instance
-      uses: appleboy/ssh-action@master     #가장 최신 버젼 appleboy 사용
+      uses: appleboy/ssh-action@master
       with:
         host: ${{secrets.PROD_HOST}}
         username: ${{secrets.PROD_USERNAME}}
         key: ${{secrets.PROD_PRIVATE_KEY}}
         port: ${{secrets.PROD_PORT}}
         script: |
+          whoami
           docker-compose build
           docker rm -f $(docker ps -qa) 2>/dev/null || true
           docker-compose up -d
