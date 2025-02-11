@@ -47,7 +47,7 @@ jobs:
         port: ${{secrets.PROD_PORT}}
         source: "build/libs/modoojeonse-0.0.1-SNAPSHOT.jar"
         target: "/volume2/docker/modoojeonse/modoojeonse-service"
-        strip_components: 1
+        strip_components: 2
         overwrite: true
         debug: true
 
@@ -70,6 +70,6 @@ jobs:
           whoami
           PATH="/var/packages/ContainerManager/target/usr/bin/:$PATH"
           docker-compose build
-          docker rm -f $(docker ps -qa) 2>/dev/null || true
+          docker-compose down
           docker-compose up -d
           docker image prune -f
