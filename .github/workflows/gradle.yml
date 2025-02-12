@@ -46,7 +46,7 @@ jobs:
         key: ${{secrets.PROD_PRIVATE_KEY}}
         port: ${{secrets.PROD_PORT}}
         source: "build/libs/modoojeonse-0.0.1-SNAPSHOT.jar"
-        target: "/volume2/docker/modoojeonse/modoojeonse-service"
+        target: ${{ format('{0}/modoojeonse-service', secrets.SERVICE_ROOT) }}
         strip_components: 2
         overwrite: true
         debug: true
@@ -67,8 +67,9 @@ jobs:
         key: ${{secrets.PROD_PRIVATE_KEY}}
         port: ${{secrets.PROD_PORT}}
         script: |
-          whoami
+          cd ${{ format('{0}/modoojeonse-service', secrets.SERVICE_ROOT) }}
           PATH="/var/packages/ContainerManager/target/usr/bin/:$PATH"
+          pwd
           docker-compose build
           docker-compose down
           docker-compose up -d
