@@ -26,5 +26,51 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
+    - name: Generate gradle wrapper
+      run: gradle wrapper
+
+    - name: Set YML
+      run: |
+        mkdir -p src/main/resources
+        echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
+        find src
+        
     - name: Build with Gradle Wrapper
       run: ./gradlew clean build --exclude-task test
+      
+    - name: Transfer jar file
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{secrets.PROD_HOST}}
+        username: ${{secrets.PROD_USERNAME}}
+        key: ${{secrets.PROD_PRIVATE_KEY}}
+        port: ${{secrets.PROD_PORT}}
+        source: "build/libs/modoojeonse-0.0.1-SNAPSHOT.jar"
+        target: ${{ format('{0}/modoojeonse-service', secrets.SERVICE_ROOT) }}
+        strip_components: 2
+        overwrite: true
+        debug: true
+
+
+  deploy:
+
+    runs-on: ubuntu-latest
+    permissions: write-all
+    needs: build
+    
+    steps:
+    - name: Deploy to Instance
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{secrets.PROD_HOST}}
+        username: ${{secrets.PROD_USERNAME}}
+        key: ${{secrets.PROD_PRIVATE_KEY}}
+        port: ${{secrets.PROD_PORT}}
+        script: |
+          cd ${{ format('{0}/modoojeonse-service', secrets.SERVICE_ROOT) }}
+          PATH="/var/packages/ContainerManager/target/usr/bin/:$PATH"
+          pwd
+          docker-compose build
+          docker-compose down
+          docker-compose up -d
+          docker image prune -f
