@@ -45,7 +45,7 @@ jobs:
         username: ${{secrets.PROD_USERNAME}}
         key: ${{secrets.PROD_PRIVATE_KEY}}
         port: ${{secrets.PROD_PORT}}
-        source: "build/libs/modoojeonse-0.0.1-SNAPSHOT.jar"
+        source: "build/libs/modoojeonse-0.0.1-SNAPSHOT.jar,Dockerfile,docker-compose.yml"
         target: ${{ format('{0}/modoojeonse-service', secrets.SERVICE_ROOT) }}
         strip_components: 2
         overwrite: true
