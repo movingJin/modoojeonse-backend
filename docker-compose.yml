@@ -8,3 +8,8 @@ services:
       - "28083:58083"
     environment:
       - TZ=Asia/Seoul
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
